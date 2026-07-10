@@ -202,7 +202,7 @@
   <div class="tools"><button id="expandAll">Tümünü aç/kapat</button><button id="ioBtn">Yedekle / geri yükle</button><button id="resetBtn">Bu dersi sıfırla</button><button id="logoutBtn">Çıkış</button></div>
   <div id="io"><textarea id="ioText" placeholder="Yedek kodunu yapıştır → Geri yükle."></textarea>
     <div class="row"><button id="exportBtn">Tümünü yedekle (kopyala)</button><button id="importBtn">Geri yükle</button></div></div>
-  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Hafta içi her gün <b>1 yeni konu + 1 tekrar</b>; konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>1 Eyl 2026 – 14 Haz 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
+  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Sabit haftalık düzen: <b>Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap</b> (her biri 1 yeni konu + 1 tekrar), <b>Cuma İngilizce + Din</b> (tekrarsız); konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>1 Eyl 2026 – 14 Haz 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
@@ -212,97 +212,98 @@
 /* ===== VERİ ===== */
 const MAT8=[
  ["FAZ 1 · 1. Dönem",[
-   ["1 · Çarpanlar ve Katlar",["Çarpanlar ve Katlar","EBOB-EKOK","EBOB-EKOK Problemleri","Aralarında Asal Sayılar"]],
-   ["2 · Üslü İfadeler",["Üslü İfadeler","Üslü İfadelerde İşlemler","Bilimsel Gösterim"]],
-   ["3 · Kareköklü İfadeler",["Karekök ve Tam Kare Sayılar","Karekök Tahmini ve Sıralama","Karekökte Çarpma-Bölme","Karekökte Toplama-Çıkarma","İrrasyonel Sayılar"]],
-   ["4 · Veri Analizi",["Grafik Çeşitleri","Grafik Yorumlama ve Dönüştürme"]],
-   ["5 · Olasılık",["Olasılık Kavramı","Basit Olayların Olma Olasılığı"]],
+   ["1 · Çarpanlar ve Katlar",["Çarpan ve Kat Kavramı","Asal Çarpanlara Ayırma","Pozitif Bölen (Çarpan) Sayısı","EBOB Hesaplama","EKOK Hesaplama","EBOB-EKOK Problemleri","Aralarında Asal Sayılar"]],
+   ["2 · Üslü İfadeler",["Tam Sayıların Tam Sayı Kuvvetleri","Üslü İfadelerde Çarpma-Bölme","Üssün Üssü","Sıfır ve Negatif Üs","Ondalık Sayıların Üslü Gösterimi","Bilimsel Gösterim"]],
+   ["3 · Kareköklü İfadeler",["Tam Kare Sayılar","Karekök Kavramı","Karekök Tahmini ve Sıralama","Kök İçine-Dışına Alma","Karekökte Çarpma-Bölme","Karekökte Toplama-Çıkarma","Ondalık Sayıların Karekökü","Gerçek Sayılar (Rasyonel-İrrasyonel)"]],
+   ["4 · Veri Analizi",["Veri Toplama ve Grafik Çeşitleri","Grafik Yorumlama","Grafikler Arası Dönüşüm"]],
  ]],
  ["FAZ 2 · 2. Dönem",[
-   ["6 · Cebirsel İfadeler ve Özdeşlikler",["Cebirsel İfadelerde Çarpma","Özdeşlikler","Çarpanlara Ayırma"]],
-   ["7 · Doğrusal Denklemler",["Birinci Dereceden Denklemler","Denklem Problemleri","Koordinat Sistemi","Doğrusal İlişki ve Grafik","Eğim","Doğrunun Denklemi"]],
-   ["8 · Eşitsizlikler",["Eşitsizlikler ve Çözümü","Eşitsizlik Problemleri"]],
-   ["9 · Üçgenler",["Üçgende Kenar-Açı Bağıntıları","Üçgen Eşitsizliği","Pisagor Bağıntısı","Pisagor Uygulamaları"]],
-   ["10 · Eşlik ve Benzerlik",["Eşlik","Benzerlik"]],
-   ["11 · Dönüşüm Geometrisi",["Öteleme","Yansıma"]],
-   ["12 · Geometrik Cisimler",["Prizmalar","Silindir","Piramit ve Koni"]],
+   ["5 · Olasılık",["Olay ve Olasılık Kavramı","Basit Olayların Olasılığı","Olasılık Problemleri"]],
+   ["6 · Cebirsel İfadeler ve Özdeşlikler",["Cebirsel İfadelerle Çarpma","Tam Kare Özdeşlikleri","İki Kare Farkı Özdeşliği","Çarpanlara Ayırma (Ortak Çarpan)","Çarpanlara Ayırma (Özdeşlik-Gruplandırma)"]],
+   ["7 · Doğrusal Denklemler",["Birinci Dereceden Denklemler","Denklem Kurma ve Problemler","Koordinat Sistemi","Doğrusal İlişki ve Grafik","Eğim","Doğrunun Denklemi"]],
+   ["8 · Eşitsizlikler",["Eşitsizlik Kavramı","Eşitsizlik Çözüm Kümesi","Eşitsizlik Problemleri"]],
+   ["9 · Üçgenler",["Üçgende Kenar-Açı İlişkisi","Üçgen Eşitsizliği","Üçgenin Yardımcı Elemanları","Pisagor Bağıntısı","Pisagor Problemleri"]],
+   ["10 · Dönüşüm Geometrisi",["Öteleme","Yansıma","Dönüşümlerle Süsleme"]],
+   ["11 · Eşlik ve Benzerlik",["Eşlik","Benzerlik ve Benzerlik Oranı"]],
+   ["12 · Geometrik Cisimler",["Dik Prizmaların Yüzey Alanı","Dik Prizmaların Hacmi","Dik Silindirin Yüzey Alanı","Dik Silindirin Hacmi","Dik Piramit","Dik Koni"]],
  ]],
 ];
 const TUR8=[
  ["FAZ 1 · Anlam ve Okuma",[
-   ["1 · Sözcük ve Söz",["Sözcükte Anlam","Söz Öbekleri ve Kalıplaşmış İfadeler","Deyimler ve Atasözleri","Söz Sanatları"]],
-   ["2 · Cümle",["Cümlede Anlam","Cümle Yorumu ve Örtülü Anlam"]],
-   ["3 · Paragraf",["Ana Düşünce ve Konu","Yardımcı Düşünce","Paragrafta Yapı","Anlatım Biçimleri ve Düşünceyi Geliştirme"]],
-   ["4 · Sözel Mantık ve Görsel",["Sözel Mantık ve Muhakeme","Grafik-Tablo-Görsel Okuma","Metin Türleri"]],
+   ["1 · Sözcükte Anlam",["Gerçek-Mecaz-Terim Anlam","Çok Anlamlılık ve Eş Sesli","Eş ve Zıt Anlam","Deyimler","Atasözleri","Söz Sanatları"]],
+   ["2 · Cümlede Anlam",["Cümlede Anlam İlişkileri","Öznel-Nesnel ve Anlam Özellikleri","Örtülü Anlam ve Cümle Yorumu"]],
+   ["3 · Paragrafta Anlam",["Konu ve Ana Düşünce","Yardımcı Düşünce","Paragrafta Yapı","Paragrafta Akış ve Bölme","Anlatım Biçimleri","Düşünceyi Geliştirme Yolları"]],
+   ["4 · Metin ve Görsel",["Metin Türleri","Grafik-Tablo-Görsel Yorumlama","Sözel Mantık ve Muhakeme"]],
  ]],
  ["FAZ 2 · Dil Bilgisi ve Yazım",[
-   ["5 · Fiilimsiler",["İsim-Fiil","Sıfat-Fiil","Zarf-Fiil"]],
-   ["6 · Cümlenin Ögeleri",["Özne ve Yüklem","Nesne ve Tümleçler","Ögelere Ayırma Uygulama"]],
-   ["7 · Fiilde Çatı",["Öznesine Göre Çatı","Nesnesine Göre Çatı"]],
-   ["8 · Cümle Türleri",["Yapısına ve Anlamına Göre Cümleler"]],
-   ["9 · Yazım ve Noktalama",["Yazım Kuralları","Büyük Harfler ve Birleşik Kelimeler","Noktalama İşaretleri","Noktalama Uygulama"]],
-   ["10 · Anlatım Bozuklukları",["Anlama Dayalı Bozukluklar","Yapıya Dayalı Bozukluklar"]],
+   ["5 · Fiilimsiler",["İsim-Fiil","Sıfat-Fiil","Zarf-Fiil","Fiilimsi Uygulama"]],
+   ["6 · Cümlenin Ögeleri",["Özne","Yüklem","Nesne","Dolaylı-Zarf-Edat Tümleci","Ögelere Ayırma"]],
+   ["7 · Fiilde Çatı",["Öznesine Göre Çatı (Etken-Edilgen)","Nesnesine Göre Çatı (Geçişli-Geçişsiz)"]],
+   ["8 · Cümle Türleri",["Yapısına Göre Cümleler","Anlamına ve Yüklemine Göre Cümleler"]],
+   ["9 · Yazım Kuralları",["Büyük Harflerin Yazımı","Sayı ve Kısaltmaların Yazımı","Birleşik Kelimelerin Yazımı","de/ki/mi Yazımı"]],
+   ["10 · Noktalama İşaretleri",["Nokta-Virgül-Noktalı Virgül","İki Nokta-Üç Nokta-Tire","Soru-Ünlem-Tırnak","Noktalama Uygulama"]],
+   ["11 · Anlatım Bozuklukları",["Anlama Dayalı Bozukluklar","Yapıya Dayalı Bozukluklar"]],
  ]],
 ];
 const FEN8=[
  ["FAZ 1 · 1. Dönem",[
-   ["1 · Mevsimler ve İklim",["Mevsimlerin Oluşumu","İklim ve Hava Hareketleri"]],
-   ["2 · DNA ve Genetik Kod",["DNA ve Genetik Kod","Kalıtım ve Çaprazlamalar","Mutasyon ve Modifikasyon","Adaptasyon ve Biyoteknoloji"]],
-   ["3 · Basınç",["Katı Basıncı","Sıvı Basıncı","Gaz Basıncı ve Uygulamalar"]],
-   ["4 · Madde ve Endüstri",["Periyodik Sistem","Fiziksel ve Kimyasal Değişimler","Kimyasal Tepkimeler","Asitler ve Bazlar","Isı, Sıcaklık ve Hâl Değişimi","Türkiye'de Kimya Endüstrisi"]],
+   ["1 · Mevsimler ve İklim",["Mevsimlerin Oluşumu","İklim ve Hava Olayları","İklim Bilimi"]],
+   ["2 · DNA ve Genetik Kod",["DNA'nın Yapısı","Kalıtım ve Çaprazlama","DNA'nın Kendini Eşlemesi","Mutasyon ve Modifikasyon","Adaptasyon","Biyoteknoloji"]],
+   ["3 · Basınç",["Katı Basıncı","Sıvı Basıncı","Gaz Basıncı","Basıncın Günlük Yaşam Uygulamaları"]],
+   ["4 · Madde ve Endüstri",["Periyodik Sistem","Fiziksel ve Kimyasal Değişim","Kimyasal Tepkimeler","Asitler ve Bazlar","Asit-Baz Tepkimeleri","Isı ve Sıcaklık","Maddenin Isı ile Etkileşimi","Türkiye'de Kimya Endüstrisi"]],
  ]],
  ["FAZ 2 · 2. Dönem",[
-   ["5 · Basit Makineler",["Kaldıraç ve Makaralar","Eğik Düzlem, Çıkrık ve Dişliler"]],
-   ["6 · Enerji Dönüşümleri ve Çevre",["Besin Zinciri ve Enerji Akışı","Fotosentez ve Solunum","Madde Döngüleri","Sürdürülebilir Kalkınma"]],
-   ["7 · Elektrik Yükleri ve Enerji",["Elektrik Yükleri ve Elektriklenme","Elektrik Enerjisinin Dönüşümü"]],
+   ["5 · Basit Makineler",["Kaldıraçlar","Makaralar","Eğik Düzlem ve Çıkrık","Dişliler ve Kasnaklar"]],
+   ["6 · Enerji Dönüşümleri ve Çevre",["Besin Zinciri ve Enerji Akışı","Fotosentez","Solunum","Madde Döngüleri","Sürdürülebilir Kalkınma","Geri Dönüşüm"]],
+   ["7 · Elektrik Yükleri ve Enerji",["Elektrik Yükleri ve Elektriklenme","Elektriksel Yük ve Etkileşim","Elektrik Enerjisinin Dönüşümü","Elektriğin Isı-Işık-Hareket Dönüşümü"]],
  ]],
 ];
 const ITA8=[
  ["FAZ 1 · Kurtuluşa Giden Yol",[
-   ["1 · Bir Kahraman Doğuyor",["Avrupa'daki Gelişmeler ve Osmanlı","Mustafa Kemal'in Çocukluğu ve Eğitimi","Mustafa Kemal'in Askerlik Hayatı"]],
-   ["2 · Millî Uyanış",["I. Dünya Savaşı ve Osmanlı","Mondros ve İşgaller","Cemiyetler","Kongreler ve Misakımillî"]],
-   ["3 · Ya İstiklal Ya Ölüm",["Doğu ve Güney Cepheleri","Batı Cephesi: İnönü ve Sakarya","Büyük Taarruz ve Mudanya","Maarif Kongresi ve Tekâlif-i Millîye"]],
+   ["1 · Bir Kahraman Doğuyor",["Avrupa'daki Gelişmeler ve Osmanlı","Mustafa Kemal'in Çocukluğu ve Eğitimi","Selanik-Manastır-Sofya Yılları","Mustafa Kemal'in Askerlik Hayatı","Dönemin Fikir Akımları"]],
+   ["2 · Millî Uyanış",["I. Dünya Savaşı ve Osmanlı Cepheleri","Mondros Ateşkesi ve İşgaller","Cemiyetler (Yararlı-Zararlı)","Samsun'a Çıkış ve Genelgeler","Kongreler","Misakımillî ve TBMM'nin Açılışı"]],
+   ["3 · Ya İstiklal Ya Ölüm",["Doğu ve Güney Cepheleri","Düzenli Ordu ve İnönü Savaşları","Sakarya Meydan Muharebesi","Büyük Taarruz ve Mudanya","Eğitim-Kültür (Maarif Kongresi)","Ekonomi (Tekâlif-i Millîye)"]],
  ]],
  ["FAZ 2 · Cumhuriyet ve Atatürkçülük",[
-   ["4 · Atatürkçülük ve Çağdaşlaşan Türkiye",["Siyasi İnkılaplar","Hukuk ve Eğitim İnkılapları","Toplumsal ve Ekonomik İnkılaplar","Atatürk İlkeleri","Atatürkçü Düşünce Sistemi"]],
-   ["5 · Demokratikleşme Çabaları",["Çok Partili Hayata Geçiş Denemeleri","Cumhuriyete Yönelik Tehditler"]],
-   ["6 · Atatürk Dönemi Dış Politika",["Lozan Sonrası Dış Politika","Montrö, Hatay ve Paktlar"]],
+   ["4 · Atatürkçülük ve Çağdaşlaşan Türkiye",["Saltanatın Kaldırılması ve Cumhuriyet","Siyasi İnkılaplar","Hukuk İnkılabı","Eğitim ve Kültür İnkılapları","Toplumsal İnkılaplar","Ekonomik İnkılaplar","Atatürk İlkeleri","Bütünleyici İlkeler"]],
+   ["5 · Demokratikleşme Çabaları",["Çok Partili Hayata Geçiş","Rejime Yönelik Tehditler","Demokratik Kazanımlar"]],
+   ["6 · Atatürk Dönemi Dış Politika",["Lozan Sonrası Dış Politika","Nüfus Mübadelesi ve Musul","Montrö-Hatay-Paktlar"]],
    ["7 · Atatürk'ün Ölümü ve Sonrası",["Atatürk'ün Ölümü ve İnönü Dönemi","II. Dünya Savaşı ve Türkiye"]],
  ]],
 ];
 const DIN8=[
  ["FAZ 1 · Din Kültürü ve Ahlak Bilgisi",[
-   ["1 · Kader İnancı",["Kader ve Kaza Kavramları","Evrendeki Yasalar","İnsanın İradesi ve Sorumluluğu"]],
-   ["2 · Zekât ve Sadaka",["Zekât ve İnfak","Sadaka ve Yardımlaşma"]],
-   ["3 · Din ve Hayat",["Din, Birey ve Toplum","İslam ve Temel Haklar","Kültürümüzde Dinin İzleri"]],
-   ["4 · Hz. Muhammed'in Örnekliği",["Peygamberimizin Kişiliği","Peygamberimizin Örnek Davranışları"]],
-   ["5 · Kur'an-ı Kerim",["Kur'an'ın İç Düzeni ve Ana Konuları","Kur'an, Akıl ve Bilgi"]],
+   ["1 · Kader İnancı",["Kader ve Kaza Kavramları","Evrendeki Ölçü ve Yasalar","İnsanın İradesi ve Sorumluluğu","Tevekkül ve Emek","Kaderle İlgili Kavramlar (Ecel-Rızık)"]],
+   ["2 · Zekât ve Sadaka",["Zekât ve İnfak","Zekât ve Sadaka İbadeti","Paylaşma ve Yardımlaşma","Faiz ve Zararları"]],
+   ["3 · Din ve Hayat",["Din, Birey ve Toplum","Dinin Temel Gayesi","İslam'ın Temel Haklara Yaklaşımı"]],
+   ["4 · Hz. Muhammed'in Örnekliği",["Merhametli ve Güvenilir Kişiliği","Örnek Davranışları","Hz. Muhammed'i Anlamak"]],
+   ["5 · Kur'an-ı Kerim ve Özellikleri",["Kur'an'ın Ana Konuları","Kur'an'da Akıl ve Bilgi","Kur'an'da Öğütler"]],
  ]],
 ];
 const ING8=[
  ["FAZ 1 · Üniteler 1-5",[
-   ["1 · Friendship",["Friendship (Ünite 1)"]],
-   ["2 · Teen Life",["Teen Life (Ünite 2)"]],
-   ["3 · In the Kitchen",["In the Kitchen (Ünite 3)"]],
-   ["4 · On the Phone",["On the Phone (Ünite 4)"]],
-   ["5 · The Internet",["The Internet (Ünite 5)"]],
+   ["1 · Friendship",["Friendship — Kelimeler ve İfadeler","Friendship — Comparatives"]],
+   ["2 · Teen Life",["Teen Life — Kelimeler","Teen Life — Present Simple & Adverbs of Frequency"]],
+   ["3 · In the Kitchen",["In the Kitchen — Kelimeler","In the Kitchen — Imperatives & Sequencing"]],
+   ["4 · On the Phone",["On the Phone — Kelimeler","On the Phone — Present Continuous"]],
+   ["5 · The Internet",["The Internet — Kelimeler","The Internet — Question Forms"]],
  ]],
  ["FAZ 2 · Üniteler 6-10",[
-   ["6 · Adventures",["Adventures (Ünite 6)"]],
-   ["7 · Tourism",["Tourism (Ünite 7)"]],
-   ["8 · Chores",["Chores (Ünite 8)"]],
-   ["9 · Science",["Science (Ünite 9)"]],
-   ["10 · Natural Forces",["Natural Forces (Ünite 10)"]],
+   ["6 · Adventures",["Adventures — Kelimeler","Adventures — Should/Must (Gereklilik)"]],
+   ["7 · Tourism",["Tourism — Kelimeler","Tourism — Simple Past"]],
+   ["8 · Chores",["Chores — Kelimeler","Chores — Present Perfect"]],
+   ["9 · Science",["Science — Kelimeler","Science — Passive & Cause-Effect"]],
+   ["10 · Natural Forces",["Natural Forces — Kelimeler","Natural Forces — Future (will / going to)"]],
  ]],
 ];
 
 const SUBJECTS=[
- {key:"mat",name:"Matematik",color:"#6EE7B7",plan:MAT8},
- {key:"tur",name:"Türkçe",color:"#B39DDB",plan:TUR8},
- {key:"fen",name:"Fen Bilimleri",color:"#6FC3E8",plan:FEN8},
- {key:"ita",name:"İnkılap Tarihi",color:"#D9B26A",plan:ITA8},
- {key:"ing",name:"İngilizce",color:"#E88FB0",plan:ING8},
- {key:"din",name:"Din Kültürü",color:"#B8C77E",plan:DIN8},
+ {key:"mat",name:"Matematik",color:"#6EE7B7",plan:MAT8,dayLabel:"Pazartesi"},
+ {key:"tur",name:"Türkçe",color:"#B39DDB",plan:TUR8,dayLabel:"Salı"},
+ {key:"fen",name:"Fen Bilimleri",color:"#6FC3E8",plan:FEN8,dayLabel:"Çarşamba"},
+ {key:"ita",name:"İnkılap Tarihi",color:"#D9B26A",plan:ITA8,dayLabel:"Perşembe"},
+ {key:"ing",name:"İngilizce",color:"#E88FB0",plan:ING8,dayLabel:"Cuma"},
+ {key:"din",name:"Din Kültürü",color:"#B8C77E",plan:DIN8,dayLabel:"Cuma"},
 ];
 const TABS=[{key:"_genel",name:"Genel"},...SUBJECTS];
 
@@ -314,17 +315,24 @@ function fmtFull(d){return d.getDate()+" "+MONTHS[d.getMonth()]+" "+DAYS[d.getDa
 const todayD=new Date(); todayD.setHours(0,0,0,0); const todayKey=dstr(todayD);
 function todayStr(){return dstr(new Date());}
 
-/* ===== Takvim: 1 Eyl 2026 – 14 Haz 2030, hafta içi · her gün 1 yeni konu + 1 tekrar ===== */
+/* ===== Takvim: 1 Eyl 2026 – 14 Haz 2030 · sabit haftalık düzen =====
+   Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap → her biri 1 yeni konu + 1 tekrar
+   Cuma İngilizce + Din → ikisi de yeni, tekrar yok. Haftanın aynı günü hep aynı ders. */
 const START=new Date(2026,8,1), END=new Date(2030,5,14);
-const REV_GAP=5; /* tekrar: 5 çalışma günü (1 hafta) sonra */
+const WEEKSUBJ={1:["mat"],2:["tur"],3:["fen"],4:["ita"],5:["ing","din"]};
 const IDS={};SUBJECTS.forEach(sj=>{const a=[];sj.plan.forEach((ph,pi)=>ph[1].forEach((h,hi)=>h[1].forEach((s,si)=>a.push(`${pi}-${hi}-${si}`))));IDS[sj.key]=a;});
-const SLOTS=[];{let d=new Date(START);while(d<=END){const w=d.getDay();if(w>=1&&w<=5)SLOTS.push(new Date(d));d.setDate(d.getDate()+1);}}
-function mkItem(j){const sj=SUBJECTS[j%SUBJECTS.length];const n=Math.floor(j/SUBJECTS.length);const ids=IDS[sj.key];
-  return {sk:sj.key,id:ids[n%ids.length],round:Math.floor(n/ids.length)+1};}
-const DAYPLAN=SLOTS.map((dt,i)=>({date:dt,main:mkItem(i),rev:i>=REV_GAP?mkItem(i-REV_GAP):null}));
-const SCH={};SUBJECTS.forEach(sj=>SCH[sj.key]={subMap:{}});
-DAYPLAN.forEach(dp=>{[["main",false],["rev",true]].forEach(([kk,isRev])=>{const it=dp[kk];if(!it)return;
-  const m=SCH[it.sk].subMap;(m[it.id]=m[it.id]||[]).push({date:dp.date,round:it.round,rev:isRev});});});
+const DAYPLAN=[];const SCH={};SUBJECTS.forEach(sj=>SCH[sj.key]={subMap:{}});
+{const wdCount={1:0,2:0,3:0,4:0,5:0};let d=new Date(START);
+ while(d<=END){const w=d.getDay();
+   if(WEEKSUBJ[w]){const c=wdCount[w];const items=[];
+     if(w===5){WEEKSUBJ[5].forEach(sk=>{const ids=IDS[sk];items.push({sk,id:ids[c%ids.length],round:Math.floor(c/ids.length)+1,rev:false});});}
+     else{const sk=WEEKSUBJ[w][0];const ids=IDS[sk];
+       items.push({sk,id:ids[c%ids.length],round:Math.floor(c/ids.length)+1,rev:false});
+       if(c>=1)items.push({sk,id:ids[(c-1)%ids.length],round:Math.floor((c-1)/ids.length)+1,rev:true});}
+     DAYPLAN.push({date:new Date(d),items});
+     items.forEach(it=>{const m=SCH[it.sk].subMap;(m[it.id]=m[it.id]||[]).push({date:new Date(d),round:it.round,rev:it.rev});});
+     wdCount[w]++;}
+   d.setDate(d.getDate()+1);}}
 
 /* ===== Durum & depolama ===== */
 const STATES=["Başlanmadı","Öğrenildi","Soru çözüldü","Pekişti"];
@@ -390,9 +398,9 @@ function renderDen(kind){const card=document.querySelector(`.den-card[data-den="
 /* ===== Genel sekmesi ===== */
 let CAL=null;
 function buildCal(){ if(CAL)return CAL; CAL=new Map();
-  DAYPLAN.forEach(dp=>{const k=dstr(dp.date);const arr=[];
-    [["main",false],["rev",true]].forEach(([kk,isRev])=>{const it=dp[kk];if(!it)return;const sj=SUBJECTS.find(s=>s.key===it.sk);const a=it.id.split("-").map(Number);
-      arr.push({color:sj.color,subj:sj.name,label:sj.plan[a[0]][1][a[1]][1][a[2]],round:it.round,rev:isRev,sk:it.sk,id:it.id});});
+  DAYPLAN.forEach(dp=>{const k=dstr(dp.date);
+    const arr=dp.items.map(it=>{const sj=SUBJECTS.find(s=>s.key===it.sk);const a=it.id.split("-").map(Number);
+      return {color:sj.color,subj:sj.name,label:sj.plan[a[0]][1][a[1]][1][a[2]],round:it.round,rev:it.rev,sk:it.sk,id:it.id};});
     CAL.set(k,arr);});
   return CAL;}
 function monthsList(){const arr=[];let y=START.getFullYear(),m=START.getMonth();const ey=END.getFullYear(),em=END.getMonth();
@@ -459,7 +467,8 @@ function renderSubject(){
   document.getElementById("todayStrip").style.display="";
   document.getElementById("subName").textContent=sj.name;
   const nSub=IDS[sj.key].length;
-  document.getElementById("subTag").textContent=`${nSub} konu · hafta içi dönüşümlü + haftalık tekrar · 1 Eyl 2026 – 14 Haz 2030`;
+  const revTxt=sj.key==="ing"||sj.key==="din"?"tekrarsız":"1 yeni + 1 tekrar";
+  document.getElementById("subTag").textContent=`${nSub} alt konu · her ${sj.dayLabel} (${revTxt}) · 1 Eyl 2026 – 14 Haz 2030`;
   renderSubjectDash(sj);
   let html=denCardHTML("mini","Branş Denemesi · "+sj.name);
   sj.plan.forEach((ph,pi)=>{let open=false;let inner="";
