@@ -1,5 +1,5 @@
 /* LGS Pusulam — çevrimdışı çalışma için service worker */
-const CACHE = "lgs-pusulam-v2";
+const CACHE = "lgs-pusulam-v3";
 const CORE = ["./", "./index.html", "./manifest.webmanifest"];
 
 self.addEventListener("install", (e) => {

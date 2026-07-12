@@ -322,6 +322,8 @@ function todayStr(){return dstr(new Date());}
    Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap → her biri 1 yeni konu + 1 tekrar
    Cuma İngilizce + Din → ikisi de yeni, tekrar yok. Haftanın aynı günü hep aynı ders. */
 const START=new Date(2026,8,1), END=new Date(2030,5,14);
+/* Takvim görünümü bugünden başlar (program başlamadan önce de günlük paket takibi yapılabilsin) */
+const CALBEGIN=todayD<START?todayD:START;
 const WEEKSUBJ={1:["mat"],2:["tur"],3:["fen"],4:["ita"],5:["ing","din"]};
 const IDS={};SUBJECTS.forEach(sj=>{const a=[];sj.plan.forEach((ph,pi)=>ph[1].forEach((h,hi)=>h[1].forEach((s,si)=>a.push(`${pi}-${hi}-${si}`))));IDS[sj.key]=a;});
 const DAYPLAN=[];const SCH={};SUBJECTS.forEach(sj=>SCH[sj.key]={subMap:{}});
@@ -406,7 +408,7 @@ function buildCal(){ if(CAL)return CAL; CAL=new Map();
       return {color:sj.color,subj:sj.name,label:sj.plan[a[0]][1][a[1]][1][a[2]],round:it.round,rev:it.rev,sk:it.sk,id:it.id};});
     CAL.set(k,arr);});
   return CAL;}
-function monthsList(){const arr=[];let y=START.getFullYear(),m=START.getMonth();const ey=END.getFullYear(),em=END.getMonth();
+function monthsList(){const arr=[];let y=CALBEGIN.getFullYear(),m=CALBEGIN.getMonth();const ey=END.getFullYear(),em=END.getMonth();
   while(y<ey||(y===ey&&m<=em)){arr.push([y,m]);m++;if(m>11){m=0;y++;}}return arr;}
 function calendarHTML(){const now=new Date();const cy=now.getFullYear(),cm=now.getMonth();
   return '<div class="sechead">— Gün Gün Tam Takvim —</div>'
@@ -415,10 +417,10 @@ function calendarHTML(){const now=new Date();const cy=now.getFullYear(),cm=now.g
     return `<div class="calmonth${isCur?" open":""}" data-y="${y}" data-m="${m}"><div class="cm-head"><span>${MONTHS[m]} ${y}</span><span class="ph-chev">▾</span></div><div class="cm-body"></div></div>`;}).join("");}
 function fillMonth(el){if(el.dataset.filled)return;el.dataset.filled="1";const y=+el.dataset.y,m=+el.dataset.m;const cal=buildCal();
   const dim=new Date(y,m+1,0).getDate();let rows="";
-  for(let day=1;day<=dim;day++){const d=new Date(y,m,day);if(d<START||d>END)continue;const k=dstr(d);
+  for(let day=1;day<=dim;day++){const d=new Date(y,m,day);if(d<CALBEGIN||d>END)continue;const k=dstr(d);
     const items=cal.get(k)||[];
     let inner=items.length?items.map(x=>{const st=stageOf((prog[x.sk]||{})[x.id]);
-      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):'<span class="cd-rest">— dinlenme / serbest tekrar —</span>';
+      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı 1 Eyl\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
     const L=prog._logs||{};
     const parts=["paragraf","geometri","problem"].map(kk=>({lbl:kk,q:(L[kk]||[]).reduce((a,e)=>a+(e.d===k?(+e.q||0):0),0)}));
     const dn=parts.filter(p=>p.q>0).length;
