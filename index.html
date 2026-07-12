@@ -209,7 +209,7 @@
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
-<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 EYL 2026 – 14 HAZ 2030 · SÜRÜM 6</div></footer>
+<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 EYL 2026 – 14 HAZ 2030 · SÜRÜM 7</div></footer>
 
 <script>
 /* ===== VERİ ===== */
@@ -420,7 +420,7 @@ function fillMonth(el){if(el.dataset.filled)return;el.dataset.filled="1";const y
   for(let day=1;day<=dim;day++){const d=new Date(y,m,day);if(d<CALBEGIN||d>END)continue;const k=dstr(d);
     const items=cal.get(k)||[];
     let inner=items.length?items.map(x=>{const st=stageOf((prog[x.sk]||{})[x.id]);
-      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı 1 Eyl\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
+      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı '+fmtShort(START)+'\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
     const L=prog._logs||{};
     const parts=["paragraf","geometri","problem"].map(kk=>({lbl:kk,q:(L[kk]||[]).reduce((a,e)=>a+(e.d===k?(+e.q||0):0),0)}));
     const dn=parts.filter(p=>p.q>0).length;
