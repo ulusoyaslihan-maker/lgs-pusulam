@@ -586,6 +586,7 @@ function applyRemote(remote){if(!remote)return;const s=JSON.stringify(remote);if
 async function refetchCloud(){if(!sbc||!cloudUid)return;try{const{data}=await sbc.from("progress").select("data").eq("user_id",cloudUid).maybeSingle();if(data)applyRemote(data.data);}catch(e){}}
 async function afterLogin(){document.getElementById("lock").classList.remove("show");
   const{data:{user}}=await sbc.auth.getUser();if(!user){setSync("○ çevrimdışı","var(--parch-dim)");return;}
+  if(user.email==="aslihan@pusulam.app"){await sbc.auth.signOut();document.getElementById("lock").classList.add("show");document.getElementById("lkErr").textContent="Bu oturum YKS panosuna ait — LGS hesabınla giriş yap.";setSync("○ çevrimdışı","var(--parch-dim)");return;}
   cloudUid=user.id;
   try{const{data,error}=await sbc.from("progress").select("data").eq("user_id",cloudUid).maybeSingle();if(error)throw error;
     if(data&&data.data&&Object.keys(data.data).length)applyRemote(data.data);
@@ -594,7 +595,7 @@ async function afterLogin(){document.getElementById("lock").classList.remove("sh
   }catch(e){cloudOn=true;setSync("○ çevrimdışı","var(--parch-dim)");}}
 async function initCloud(){
   if(!window.supabase){setSync("○ çevrimdışı","var(--parch-dim)");return;}
-  sbc=window.supabase.createClient(SB_URL,SB_KEY);
+  sbc=window.supabase.createClient(SB_URL,SB_KEY,{auth:{storageKey:"sb-lgs-pusulam-auth"}});
   const{data:{session}}=await sbc.auth.getSession();
   if(session)afterLogin();else document.getElementById("lock").classList.add("show");}
 async function doLogin(){
