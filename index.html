@@ -188,12 +188,15 @@
   #lock input:focus{border-color:var(--life);outline:none}
   #lkBtn{cursor:pointer;background:var(--life);color:var(--ink);font-weight:800;border:none;border-radius:9px;padding:13px;font-size:15px;font-family:var(--sans)}
   #lkBtn:disabled{opacity:.6}
+  #lkReg{cursor:pointer;background:transparent;border:1px dashed var(--brass-dim);color:var(--brass);border-radius:9px;padding:11px;font-size:13.5px;font-family:var(--sans)}
+  #lkReg:disabled{opacity:.6}
   #lkErr{font-size:12px;color:#F28B82;min-height:15px}
+  #lkErr.ok{color:var(--s3)}
   #syncState{font-family:var(--mono);font-size:9px;letter-spacing:.05em;vertical-align:middle}
 </style>
 </head>
 <body>
-<div id="lock"><div class="lock-card"><div class="lock-brand">LGS <em>Pusulam</em></div><div class="lock-sub">Verilerin tüm cihazlarında güncel kalsın diye giriş yap</div><input id="lkUser" placeholder="Kullanıcı adı" autocomplete="username" autocapitalize="none"><input id="lkPass" type="password" placeholder="Şifre" autocomplete="current-password"><button id="lkBtn">Giriş yap</button><div id="lkErr"></div></div></div>
+<div id="lock"><div class="lock-card"><div class="lock-brand">LGS <em>Pusulam</em></div><div class="lock-sub">Verilerin tüm cihazlarında güncel kalsın diye giriş yap. İlk kez mi? Kullanıcı adı ve şifre belirleyip <b>Yeni hesap oluştur</b>'a dokun.</div><input id="lkUser" placeholder="Kullanıcı adı" autocomplete="username" autocapitalize="none"><input id="lkPass" type="password" placeholder="Şifre" autocomplete="current-password"><button id="lkBtn">Giriş yap</button><button id="lkReg">Yeni hesap oluştur</button><div id="lkErr"></div></div></div>
 <div class="topbar"><div class="brand">LGS <em>Pusulam</em> <span id="syncState"></span></div><div class="tabs" id="tabs"></div></div>
 <header class="sub-hero"><h1 id="subName">Matematik</h1><div class="tag" id="subTag"></div></header>
 <main class="wrap">
@@ -596,13 +599,32 @@ async function doLogin(){
   const u=document.getElementById("lkUser").value.trim().toLowerCase();
   const p=document.getElementById("lkPass").value;
   const err=document.getElementById("lkErr");const btn=document.getElementById("lkBtn");
+  err.classList.remove("ok");
   if(!u||!p){err.textContent="Kullanıcı adı ve şifreyi gir.";return;}
+  if(u==="aslihan"){err.textContent="Bu hesap YKS panosuna ait — çakışmasın diye LGS'de kullanılamaz. LGS için ayrı hesap oluştur.";return;}
   err.textContent="";btn.disabled=true;btn.textContent="Giriş yapılıyor…";
   const{error}=await sbc.auth.signInWithPassword({email:u+"@pusulam.app",password:p});
   btn.disabled=false;btn.textContent="Giriş yap";
   if(error){err.textContent="Kullanıcı adı veya şifre hatalı.";return;}
   afterLogin();}
+async function doSignup(){
+  const u=document.getElementById("lkUser").value.trim().toLowerCase();
+  const p=document.getElementById("lkPass").value;
+  const err=document.getElementById("lkErr");const btn=document.getElementById("lkReg");
+  err.classList.remove("ok");
+  if(!u||!p){err.textContent="Önce yukarıya kullanıcı adı ve şifre yaz, sonra bu düğmeye dokun.";return;}
+  if(u==="aslihan"){err.textContent="Bu ad YKS panosuna ait — LGS için farklı bir kullanıcı adı seç (örn. lgs).";return;}
+  if(p.length<6){err.textContent="Şifre en az 6 karakter olmalı.";return;}
+  err.textContent="";btn.disabled=true;btn.textContent="Hesap oluşturuluyor…";
+  const{data,error}=await sbc.auth.signUp({email:u+"@pusulam.app",password:p});
+  btn.disabled=false;btn.textContent="Yeni hesap oluştur";
+  if(error){err.textContent=/already|registered/i.test(error.message)?"Bu kullanıcı adı zaten kayıtlı — üstteki Giriş yap'ı kullan.":"Hesap oluşturulamadı: "+error.message;return;}
+  if(!data.session){const r=await sbc.auth.signInWithPassword({email:u+"@pusulam.app",password:p});
+    if(r.error){err.textContent="Hesap açıldı ama otomatik giriş yapılamadı (e-posta onayı gerekiyor olabilir). Supabase panelinden Authentication → Users → bu kullanıcıyı Confirm et, sonra giriş yap.";return;}}
+  err.classList.add("ok");err.textContent="Hesap oluşturuldu, giriş yapıldı ✓";
+  afterLogin();}
 document.getElementById("lkBtn").addEventListener("click",doLogin);
+document.getElementById("lkReg").addEventListener("click",doSignup);
 document.getElementById("lkPass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 document.getElementById("lkUser").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 document.getElementById("logoutBtn").addEventListener("click",async()=>{if(!confirm("Çıkış yapılsın mı? (Verilerin bulutta saklı kalır)"))return;try{if(sbc)await sbc.auth.signOut();}catch(e){}location.reload();});
