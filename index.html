@@ -205,11 +205,11 @@
   <div class="tools"><button id="expandAll">Tümünü aç/kapat</button><button id="ioBtn">Yedekle / geri yükle</button><button id="resetBtn">Bu dersi sıfırla</button><button id="logoutBtn">Çıkış</button></div>
   <div id="io"><textarea id="ioText" placeholder="Yedek kodunu yapıştır → Geri yükle."></textarea>
     <div class="row"><button id="exportBtn">Tümünü yedekle (kopyala)</button><button id="importBtn">Geri yükle</button></div></div>
-  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Sabit haftalık düzen: <b>Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap</b> (her biri 1 yeni konu + 1 tekrar), <b>Cuma İngilizce + Din</b> (tekrarsız); konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>1 Eyl 2026 – 14 Haz 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
+  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Sabit haftalık düzen: <b>Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap</b> (her biri 1 yeni konu + 1 tekrar), <b>Cuma İngilizce + Din</b> (tekrarsız); konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>13 Tem 2026 – 14 Haz 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
-<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 EYL 2026 – 14 HAZ 2030 · SÜRÜM 7</div></footer>
+<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 13 TEM 2026 – 14 HAZ 2030 · SÜRÜM 8</div></footer>
 
 <script>
 /* ===== VERİ ===== */
@@ -321,7 +321,7 @@ function todayStr(){return dstr(new Date());}
 /* ===== Takvim: 1 Eyl 2026 – 14 Haz 2030 · sabit haftalık düzen =====
    Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap → her biri 1 yeni konu + 1 tekrar
    Cuma İngilizce + Din → ikisi de yeni, tekrar yok. Haftanın aynı günü hep aynı ders. */
-const START=new Date(2026,8,1), END=new Date(2030,5,14);
+const START=new Date(2026,6,13), END=new Date(2030,5,14);
 /* Takvim görünümü bugünden başlar (program başlamadan önce de günlük paket takibi yapılabilsin) */
 const CALBEGIN=todayD<START?todayD:START;
 const WEEKSUBJ={1:["mat"],2:["tur"],3:["fen"],4:["ita"],5:["ing","din"]};
@@ -440,7 +440,7 @@ function renderGenelDash(){const g=globalTotals();
     <div class="gcard"><div class="gv">${g.rein}/${g.tot}</div><div class="gl">Pekişen konu (tüm dersler)</div></div></div>`;}
 function renderGenel(){
   document.getElementById("subName").textContent="Genel Bakış";
-  document.getElementById("subTag").textContent="Tüm dersler · deneme + toplamlar · 1 Eyl 2026 – 14 Haz 2030";
+  document.getElementById("subTag").textContent="Tüm dersler · deneme + toplamlar · 13 Tem 2026 – 14 Haz 2030";
   document.getElementById("todayStrip").style.display="none";
   renderGenelDash();
   let html='<div class="sechead">— Günlük Paket (her gün 5\'er soru · toplama dahil) —</div>'
@@ -473,7 +473,7 @@ function renderSubject(){
   document.getElementById("subName").textContent=sj.name;
   const nSub=IDS[sj.key].length;
   const revTxt=sj.key==="ing"||sj.key==="din"?"tekrarsız":"1 yeni + 1 tekrar";
-  document.getElementById("subTag").textContent=`${nSub} alt konu · her ${sj.dayLabel} (${revTxt}) · 1 Eyl 2026 – 14 Haz 2030`;
+  document.getElementById("subTag").textContent=`${nSub} alt konu · her ${sj.dayLabel} (${revTxt}) · 13 Tem 2026 – 14 Haz 2030`;
   renderSubjectDash(sj);
   let html=denCardHTML("mini","Branş Denemesi · "+sj.name);
   sj.plan.forEach((ph,pi)=>{let open=false;let inner="";
