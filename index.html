@@ -209,7 +209,7 @@
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
-<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 KAS 2026 – 30 MAY 2030 · SÜRÜM 9</div></footer>
+<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 KAS 2026 – 30 MAY 2030 · SÜRÜM 10</div></footer>
 
 <script>
 /* ===== VERİ ===== */
@@ -322,7 +322,8 @@ function todayStr(){return dstr(new Date());}
    Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap → her biri 1 yeni konu + 1 tekrar
    Cuma İngilizce + Din → ikisi de yeni, tekrar yok. Haftanın aynı günü hep aynı ders. */
 const START=new Date(2026,10,1), END=new Date(2030,4,30);
-const CALBEGIN=START;
+/* Takvim bugünden görünür (program başlamadan da günlük paket takip edilip boyanabilsin) */
+const CALBEGIN=todayD<START?todayD:START;
 const WEEKSUBJ={1:["mat"],2:["tur"],3:["fen"],4:["ita"],5:["ing","din"]};
 const IDS={};SUBJECTS.forEach(sj=>{const a=[];sj.plan.forEach((ph,pi)=>ph[1].forEach((h,hi)=>h[1].forEach((s,si)=>a.push(`${pi}-${hi}-${si}`))));IDS[sj.key]=a;});
 const DAYPLAN=[];const SCH={};SUBJECTS.forEach(sj=>SCH[sj.key]={subMap:{}});
@@ -419,7 +420,7 @@ function fillMonth(el){if(el.dataset.filled)return;el.dataset.filled="1";const y
   const dim=new Date(y,m+1,0).getDate();let rows="";
   for(let day=1;day<=dim;day++){const d=new Date(y,m,day);if(d<CALBEGIN||d>END)continue;const k=dstr(d);
     const items=cal.get(k)||[];
-    let inner=items.length?items.map(x=>{const st=stageOf((prog[x.sk]||{})[x.id]);
+    let inner=items.length?items.map(x=>{const st=x.rev?0:stageOf((prog[x.sk]||{})[x.id]);
       return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı '+fmtShort(START)+'\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
     const L=prog._logs||{};
     const parts=["paragraf","geometri","problem"].map(kk=>({lbl:kk,q:(L[kk]||[]).reduce((a,e)=>a+(e.d===k?(+e.q||0):0),0)}));
