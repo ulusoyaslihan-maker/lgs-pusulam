@@ -81,6 +81,7 @@
   .dchip{font-family:var(--mono);font-size:9.5px;color:var(--parch-dim);border:1px solid var(--line);border-radius:20px;padding:2px 7px;font-weight:400}
   .dchip.t{color:var(--ink);background:var(--life);border-color:var(--life);font-weight:700}
   .dchip.rep{color:var(--s3);border-color:color-mix(in srgb,var(--s3) 40%,transparent)}
+  .dchip.done{color:#eafff6;background:color-mix(in srgb,var(--s3) 35%,transparent);border-color:var(--s3);font-weight:700}
   .subs{display:flex;flex-direction:column;gap:6px}
   .sub-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--ink-2)}
   .sub-wrap.today{border-color:var(--life);box-shadow:0 0 0 1px color-mix(in srgb,var(--life) 30%,transparent)}
@@ -209,7 +210,7 @@
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
-<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 KAS 2026 – 30 MAY 2030 · SÜRÜM 10</div></footer>
+<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 KAS 2026 – 30 MAY 2030 · SÜRÜM 11</div></footer>
 
 <script>
 /* ===== VERİ ===== */
@@ -348,6 +349,12 @@ function denArr(kind){if(kind==="lgs")return prog._lgs||(prog._lgs=[]);if(kind==
 function logArr(key){if(!prog._logs)prog._logs={};if(!prog._logs[key])prog._logs[key]=[];return prog._logs[key];}
 function sumLog(a){return (a||[]).reduce((x,e)=>x+(+e.q||0),0);}
 function stageOf(p){const n=((p&&p.s)?p.s.length:0)+((p&&p.c)?p.c.length:0);const l=!!(p&&(p.l||n>0));if(l&&n>=2)return 3;if(l&&n>=1)return 2;if(l)return 1;return 0;}
+/* Çalışma yapıldığında bugüne en yakın ders/tekrar gününü "yapıldı" işaretle (tüm tekrar günleri değil) */
+function markNearest(sk,id){var occ=(SCH[sk]&&SCH[sk].subMap[id])||[];if(!occ.length)return;
+  var T=todayD.getTime(),best=null,bd=Infinity;
+  occ.forEach(function(o){var diff=Math.abs(o.date.getTime()-T);if(diff<bd){bd=diff;best=o;}});
+  if(!best)return;var p=ensureSub(sk,id);if(!p.done)p.done=[];var k=dstr(best.date);if(p.done.indexOf(k)<0)p.done.push(k);}
+function isDone(sk,id,k){var p=prog[sk]&&prog[sk][id];return !!(p&&p.done&&p.done.indexOf(k)>=0);}
 function save(){const s=JSON.stringify(prog);try{localStorage.setItem(KEY,s);}catch(e){}pushCloud();}
 async function load(){try{const v=localStorage.getItem(KEY);if(v){prog=JSON.parse(v);return;}}catch(e){}prog={};}
 
@@ -411,17 +418,17 @@ function buildCal(){ if(CAL)return CAL; CAL=new Map();
 function monthsList(){const arr=[];let y=CALBEGIN.getFullYear(),m=CALBEGIN.getMonth();const ey=END.getFullYear(),em=END.getMonth();
   while(y<ey||(y===ey&&m<=em)){arr.push([y,m]);m++;if(m>11){m=0;y++;}}return arr;}
 function calendarHTML(){const now=new Date();const cy=now.getFullYear(),cm=now.getMonth();
-  const beforeStart=new Date(cy,cm,1)<new Date(START.getFullYear(),START.getMonth(),1);
+  const startY=START.getFullYear(),startM=START.getMonth();const beforeStart=todayD<START;
   return '<div class="sechead">— Gün Gün Tam Takvim —</div>'
     +'<div class="callegend"><span><i style="background:var(--s0)"></i>öğrenilmedi</span><span><i style="background:var(--s1)"></i>öğrenildi</span><span><i style="background:var(--s2)"></i>soru çözüldü</span><span><i style="background:var(--s3)"></i>pekişti</span></div>'
-    +monthsList().map(([y,m],idx)=>{const isCur=(y===cy&&m===cm)||(beforeStart&&idx===0);
+    +monthsList().map(([y,m])=>{const isCur=(y===cy&&m===cm)||(beforeStart&&y===startY&&m===startM);
     return `<div class="calmonth${isCur?" open":""}" data-y="${y}" data-m="${m}"><div class="cm-head"><span>${MONTHS[m]} ${y}</span><span class="ph-chev">▾</span></div><div class="cm-body"></div></div>`;}).join("");}
 function fillMonth(el){if(el.dataset.filled)return;el.dataset.filled="1";const y=+el.dataset.y,m=+el.dataset.m;const cal=buildCal();
   const dim=new Date(y,m+1,0).getDate();let rows="";
   for(let day=1;day<=dim;day++){const d=new Date(y,m,day);if(d<CALBEGIN||d>END)continue;const k=dstr(d);
     const items=cal.get(k)||[];
-    let inner=items.length?items.map(x=>{const st=x.rev?0:stageOf((prog[x.sk]||{})[x.id]);
-      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı '+fmtShort(START)+'\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
+    let inner=items.length?items.map(x=>{const done=isDone(x.sk,x.id,k);const st=done?stageOf((prog[x.sk]||{})[x.id]):0;
+      return `<span class="cd-item st${st}" style="--c:${x.color}"><span class="cdot"></span>${x.rev?"↻ ":""}${x.subj}: ${x.label} ${x.rev?"<b>TKR</b>":(x.round>1?`<b>T${x.round}</b>`:"")}${done?" ✓":""}</span>`;}).join(""):(d<START?'<span class="cd-rest">— ders programı '+fmtShort(START)+'\'de başlar —</span>':'<span class="cd-rest">— dinlenme / serbest tekrar —</span>');
     const L=prog._logs||{};
     const parts=["paragraf","geometri","problem"].map(kk=>({lbl:kk,q:(L[kk]||[]).reduce((a,e)=>a+(e.d===k?(+e.q||0):0),0)}));
     const dn=parts.filter(p=>p.q>0).length;
@@ -483,7 +490,7 @@ function renderSubject(){
         const isToday=ds.some(x=>dstr(x.date)===todayKey);if(isToday)open=true;
         const allPast=ds.length&&ds.every(x=>x.date<todayD);
         const up=ds.filter(x=>x.date>=todayD);const show=(up.length?up:ds.slice(-1)).slice(0,6);
-        let chips=show.map(x=>`<span class="dchip${dstr(x.date)===todayKey?" t":""}${x.rev?" rep":""}">${fmtShort(x.date)}${x.rev?" ↻TKR":(x.round>1?" T"+x.round:"")}</span>`).join("");
+        let chips=show.map(x=>{const dk=dstr(x.date);const dn=isDone(sj.key,id,dk);return `<span class="dchip${dk===todayKey?" t":""}${x.rev?" rep":""}${dn?" done":""}">${fmtShort(x.date)}${x.rev?" ↻TKR":(x.round>1?" T"+x.round:"")}${dn?" ✓":""}</span>`;}).join("");
         if(ds.length>show.length)chips+=`<span class="dchip more">+${ds.length-show.length}</span>`;
         subs+=`<div class="sub-wrap${isToday?" today":(allPast?" past":"")}" data-id="${id}" data-s="0">
           <div class="sub"><span class="dot"></span><div class="sub-main"><span class="txt">${s}</span><span class="dchips">${chips}</span></div><span class="qtot"></span><span class="st">Başlanmadı</span><span class="chev">▾</span></div>
@@ -537,7 +544,7 @@ function renderAll(){renderTabs();if(tab().key==="_genel")renderGenel();else ren
 function refreshTop(){renderTabs();if(tab().key==="_genel")renderGenelDash();else{renderSubjectDash(tab());updatePhaseProg(tab().key);updateTodayStrip();}}
 
 /* ===== Olaylar ===== */
-function addLog(sk,id,key,n){const p=ensureSub(sk,id);if(!p.l)p.l=1;(key==="s"?p.s:p.c).push({q:n,d:todayStr()});save();renderSub(sk,id);refreshTop();}
+function addLog(sk,id,key,n){const p=ensureSub(sk,id);if(!p.l)p.l=1;(key==="s"?p.s:p.c).push({q:n,d:todayStr()});markNearest(sk,id);save();renderSub(sk,id);refreshTop();}
 document.getElementById("phases").addEventListener("click",e=>{
   const cm=e.target.closest(".cm-head");
   if(cm){const mo=cm.parentElement;const willOpen=!mo.classList.contains("open");mo.classList.toggle("open");if(willOpen)fillMonth(mo);return;}
@@ -556,7 +563,7 @@ document.getElementById("phases").addEventListener("click",e=>{
     return;}
   const goto=e.target.closest("[data-goto]");if(goto){active=+goto.dataset.goto;renderAll();window.scrollTo({top:0,behavior:"smooth"});return;}
   const wrap=e.target.closest(".sub-wrap");if(!wrap)return;const sk=tab().key;const id=wrap.dataset.id;
-  if(e.target.closest(".learn-btn")){const p=ensureSub(sk,id);p.l=p.l?0:1;save();renderSub(sk,id);refreshTop();return;}
+  if(e.target.closest(".learn-btn")){const p=ensureSub(sk,id);p.l=p.l?0:1;if(p.l)markNearest(sk,id);save();renderSub(sk,id);refreshTop();return;}
   const preset=e.target.closest(".preset");if(preset){addLog(sk,id,preset.dataset.log,+preset.dataset.n);return;}
   const add=e.target.closest(".add-sess");if(add){const key=add.dataset.log;const inp=wrap.querySelector(`.qin[data-log="${key}"]`);const n=parseInt(inp.value,10);if(n>0){addLog(sk,id,key,n);inp.value="";}return;}
   const del=e.target.closest(".del");if(del){const key=del.dataset.log;const i=+del.dataset.i;const p=ensureSub(sk,id);(key==="s"?p.s:p.c).splice(i,1);save();renderSub(sk,id);refreshTop();return;}
