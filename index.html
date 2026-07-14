@@ -205,11 +205,11 @@
   <div class="tools"><button id="expandAll">Tümünü aç/kapat</button><button id="ioBtn">Yedekle / geri yükle</button><button id="resetBtn">Bu dersi sıfırla</button><button id="logoutBtn">Çıkış</button></div>
   <div id="io"><textarea id="ioText" placeholder="Yedek kodunu yapıştır → Geri yükle."></textarea>
     <div class="row"><button id="exportBtn">Tümünü yedekle (kopyala)</button><button id="importBtn">Geri yükle</button></div></div>
-  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Sabit haftalık düzen: <b>Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap</b> (her biri 1 yeni konu + 1 tekrar), <b>Cuma İngilizce + Din</b> (tekrarsız); konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>13 Tem 2026 – 14 Haz 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
+  <p class="note"><b>Genel</b> sekmesinde en üstte <b>toplam çözülen soru (her şey dahil)</b> görünür: konu soruları + çıkmış sorular + günlük paket. Her güne <b>5 paragraf·5 geometri·5 problem</b> paketi (istersen fazlasını da ekleyebilirsin), LGS/Kısmi deneme ve <b>gün gün tam takvim</b> burada. Sabit haftalık düzen: <b>Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap</b> (her biri 1 yeni konu + 1 tekrar), <b>Cuma İngilizce + Din</b> (tekrarsız); konusu biten ders yeni tura girer. Ders sekmelerinde her konuya <b>dokun</b> → öğrenildi, soru, çıkmış soru. Takvim <b>1 Kas 2026 – 30 May 2030</b>. İlerlemen <b>otomatik kaydedilir</b>.</p>
   <div class="legend"><span><i style="background:var(--s0)"></i>Başlanmadı</span><span><i style="background:var(--s1)"></i>Öğrenildi</span><span><i style="background:var(--s2)"></i>Soru çözüldü</span><span><i style="background:var(--s3)"></i>Pekişti</span></div>
   <div id="phases"></div>
 </main>
-<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 13 TEM 2026 – 14 HAZ 2030 · SÜRÜM 8</div></footer>
+<footer><div class="seal">"Altı ders, tek pusula; her gün bir adım."</div><div class="sm">LGS PUSULAM · 6 DERS · 1 KAS 2026 – 30 MAY 2030 · SÜRÜM 9</div></footer>
 
 <script>
 /* ===== VERİ ===== */
@@ -321,9 +321,8 @@ function todayStr(){return dstr(new Date());}
 /* ===== Takvim: 1 Eyl 2026 – 14 Haz 2030 · sabit haftalık düzen =====
    Pzt Matematik · Sal Türkçe · Çar Fen · Per İnkılap → her biri 1 yeni konu + 1 tekrar
    Cuma İngilizce + Din → ikisi de yeni, tekrar yok. Haftanın aynı günü hep aynı ders. */
-const START=new Date(2026,6,13), END=new Date(2030,5,14);
-/* Takvim görünümü bugünden başlar (program başlamadan önce de günlük paket takibi yapılabilsin) */
-const CALBEGIN=todayD<START?todayD:START;
+const START=new Date(2026,10,1), END=new Date(2030,4,30);
+const CALBEGIN=START;
 const WEEKSUBJ={1:["mat"],2:["tur"],3:["fen"],4:["ita"],5:["ing","din"]};
 const IDS={};SUBJECTS.forEach(sj=>{const a=[];sj.plan.forEach((ph,pi)=>ph[1].forEach((h,hi)=>h[1].forEach((s,si)=>a.push(`${pi}-${hi}-${si}`))));IDS[sj.key]=a;});
 const DAYPLAN=[];const SCH={};SUBJECTS.forEach(sj=>SCH[sj.key]={subMap:{}});
@@ -411,9 +410,10 @@ function buildCal(){ if(CAL)return CAL; CAL=new Map();
 function monthsList(){const arr=[];let y=CALBEGIN.getFullYear(),m=CALBEGIN.getMonth();const ey=END.getFullYear(),em=END.getMonth();
   while(y<ey||(y===ey&&m<=em)){arr.push([y,m]);m++;if(m>11){m=0;y++;}}return arr;}
 function calendarHTML(){const now=new Date();const cy=now.getFullYear(),cm=now.getMonth();
+  const beforeStart=new Date(cy,cm,1)<new Date(START.getFullYear(),START.getMonth(),1);
   return '<div class="sechead">— Gün Gün Tam Takvim —</div>'
     +'<div class="callegend"><span><i style="background:var(--s0)"></i>öğrenilmedi</span><span><i style="background:var(--s1)"></i>öğrenildi</span><span><i style="background:var(--s2)"></i>soru çözüldü</span><span><i style="background:var(--s3)"></i>pekişti</span></div>'
-    +monthsList().map(([y,m])=>{const isCur=(y===cy&&m===cm);
+    +monthsList().map(([y,m],idx)=>{const isCur=(y===cy&&m===cm)||(beforeStart&&idx===0);
     return `<div class="calmonth${isCur?" open":""}" data-y="${y}" data-m="${m}"><div class="cm-head"><span>${MONTHS[m]} ${y}</span><span class="ph-chev">▾</span></div><div class="cm-body"></div></div>`;}).join("");}
 function fillMonth(el){if(el.dataset.filled)return;el.dataset.filled="1";const y=+el.dataset.y,m=+el.dataset.m;const cal=buildCal();
   const dim=new Date(y,m+1,0).getDate();let rows="";
@@ -440,7 +440,7 @@ function renderGenelDash(){const g=globalTotals();
     <div class="gcard"><div class="gv">${g.rein}/${g.tot}</div><div class="gl">Pekişen konu (tüm dersler)</div></div></div>`;}
 function renderGenel(){
   document.getElementById("subName").textContent="Genel Bakış";
-  document.getElementById("subTag").textContent="Tüm dersler · deneme + toplamlar · 13 Tem 2026 – 14 Haz 2030";
+  document.getElementById("subTag").textContent="Tüm dersler · deneme + toplamlar · 1 Kas 2026 – 30 May 2030";
   document.getElementById("todayStrip").style.display="none";
   renderGenelDash();
   let html='<div class="sechead">— Günlük Paket (her gün 5\'er soru · toplama dahil) —</div>'
@@ -473,7 +473,7 @@ function renderSubject(){
   document.getElementById("subName").textContent=sj.name;
   const nSub=IDS[sj.key].length;
   const revTxt=sj.key==="ing"||sj.key==="din"?"tekrarsız":"1 yeni + 1 tekrar";
-  document.getElementById("subTag").textContent=`${nSub} alt konu · her ${sj.dayLabel} (${revTxt}) · 13 Tem 2026 – 14 Haz 2030`;
+  document.getElementById("subTag").textContent=`${nSub} alt konu · her ${sj.dayLabel} (${revTxt}) · 1 Kas 2026 – 30 May 2030`;
   renderSubjectDash(sj);
   let html=denCardHTML("mini","Branş Denemesi · "+sj.name);
   sj.plan.forEach((ph,pi)=>{let open=false;let inner="";
@@ -481,9 +481,9 @@ function renderSubject(){
       h[1].forEach((s,si)=>{const id=`${pi}-${hi}-${si}`;const ds=(sc.subMap[id]||[]).slice().sort((a,b)=>a.date-b.date);
         const isToday=ds.some(x=>dstr(x.date)===todayKey);if(isToday)open=true;
         const allPast=ds.length&&ds.every(x=>x.date<todayD);
-        const up=ds.filter(x=>x.date>=todayD);const show=(up.length?up:ds.slice(-1)).slice(0,3);
-        let chips=show.map(x=>`<span class="dchip${dstr(x.date)===todayKey?" t":""}${x.rev?" rep":""}">${fmtShort(x.date)}${x.rev?" TKR":(x.round>1?" T"+x.round:"")}</span>`).join("");
-        if(ds.length>show.length)chips+=`<span class="dchip more">↻${ds.length}</span>`;
+        const up=ds.filter(x=>x.date>=todayD);const show=(up.length?up:ds.slice(-1)).slice(0,6);
+        let chips=show.map(x=>`<span class="dchip${dstr(x.date)===todayKey?" t":""}${x.rev?" rep":""}">${fmtShort(x.date)}${x.rev?" ↻TKR":(x.round>1?" T"+x.round:"")}</span>`).join("");
+        if(ds.length>show.length)chips+=`<span class="dchip more">+${ds.length-show.length}</span>`;
         subs+=`<div class="sub-wrap${isToday?" today":(allPast?" past":"")}" data-id="${id}" data-s="0">
           <div class="sub"><span class="dot"></span><div class="sub-main"><span class="txt">${s}</span><span class="dchips">${chips}</span></div><span class="qtot"></span><span class="st">Başlanmadı</span><span class="chev">▾</span></div>
           <div class="detail"><div class="detail-in">
